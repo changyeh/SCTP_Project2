@@ -23,10 +23,12 @@ app.use(
     })
 );
 
-const landingRoutes = require('./routes/landing.js');
+const landingRoutes = require('./routes/landing');
+const catRoutes = require('./routes/cats')
 
 async function main() {
     app.use('/', landingRoutes);
+    app.use('/cats', catRoutes);
 }
 
 main();
