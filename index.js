@@ -23,10 +23,10 @@ app.use(
     })
 );
 
+const landingRoutes = require('./routes/landing.js');
+
 async function main() {
-    app.use('/', (req, res) => {
-        res.send("It's alive!")
-    })
+    app.use('/', landingRoutes);
 }
 
 main();
