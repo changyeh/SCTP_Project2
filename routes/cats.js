@@ -35,4 +35,72 @@ router.post('/create', async(req,res)=>{
     })
 })
 
+router.get('/:cat_id/update', async (req, res) => {
+    const catId = req.params.cat_id;
+    const cat = await Cat.where({
+        'id': catId
+    }).fetch({
+        require: true
+    });
+
+    const catForm = createCatForm();
+
+    // fill in the existing values
+    catForm.fields.name.value = cat.get('name');
+    catForm.fields.cost.value = cat.get('cost');
+    catForm.fields.description.value = cat.get('description');
+
+    res.render('cats/update', {
+        'form': catForm.toHTML(bootstrapField),
+        'product': cat.toJSON()
+    })
+})
+
+router.post('/:cat_id/update', async (req, res) => {
+
+    const cat = await Cat.where({
+        'id': req.params.cat_id
+    }).fetch({
+        require: true
+    });
+
+    // process the form
+    const catForm = createCatForm();
+    catForm.handle(req, {
+        'success': async (form) => {
+            cat.set(form.data);
+            cat.save();
+            res.redirect('/cats');
+        },
+        'error': async (form) => {
+            res.render('cats/update', {
+                'form': form.toHTML(bootstrapField),
+                'cat': cat.toJSON()
+            })
+        }
+    })
+})
+
+router.get('/:cat_id/delete', async(req,res)=>{
+    const cat = await Cat.where({
+        'id': req.params.cat_id
+    }).fetch({
+        require: true
+    });
+
+    res.render('cats/delete', {
+        'cat': cat.toJSON()
+    })
+});
+
+router.post('/:cat_id/delete', async(req,res)=>{
+    const cat = await Cat.where({
+        'id': req.params.cat_id
+    }).fetch({
+        require: true
+    });
+    await cat.destroy();
+    res.redirect('/cats')
+})
+
 module.exports = router;
