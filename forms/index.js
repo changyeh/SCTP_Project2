@@ -34,7 +34,7 @@ const createCatForm = () => {
             required: true,
             errorAfterField: true,
             cssClasses: {
-                label: ['form-label']
+                label: ['form-label', 'mt-2']
             },
             'validators':[validators.integer()]
         }),
@@ -42,7 +42,7 @@ const createCatForm = () => {
             required: true,
             errorAfterField: true,
             cssClasses: {
-                label: ['form-label']
+                label: ['form-label', 'mt-2']
             }
         }),
     })
