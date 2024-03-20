@@ -2,6 +2,7 @@ const express = require("express");
 const { Cat } = require("../models");
 const router = express.Router();
 const { bootstrapField, createCatForm } = require('../forms');
+const dataLayer = require('../dal/cats')
 
 router.get('/', async (req,res)=>{
     let cats = await Cat.collection().fetch();
@@ -37,11 +38,7 @@ router.post('/create', async(req,res)=>{
 
 router.get('/:cat_id/update', async (req, res) => {
     const catId = req.params.cat_id;
-    const cat = await Cat.where({
-        'id': catId
-    }).fetch({
-        require: true
-    });
+    const cat = await dataLayer.getCatByID(catId);
 
     const catForm = createCatForm();
 
@@ -57,12 +54,8 @@ router.get('/:cat_id/update', async (req, res) => {
 })
 
 router.post('/:cat_id/update', async (req, res) => {
-
-    const cat = await Cat.where({
-        'id': req.params.cat_id
-    }).fetch({
-        require: true
-    });
+    const catId = req.params.cat_id;
+    const cat = await dataLayer.getCatByID(catId);
 
     // process the form
     const catForm = createCatForm();
@@ -82,11 +75,8 @@ router.post('/:cat_id/update', async (req, res) => {
 })
 
 router.get('/:cat_id/delete', async(req,res)=>{
-    const cat = await Cat.where({
-        'id': req.params.cat_id
-    }).fetch({
-        require: true
-    });
+    const catId = req.params.cat_id;
+    const cat = await dataLayer.getCatByID(catId);
 
     res.render('cats/delete', {
         'cat': cat.toJSON()
@@ -94,11 +84,9 @@ router.get('/:cat_id/delete', async(req,res)=>{
 });
 
 router.post('/:cat_id/delete', async(req,res)=>{
-    const cat = await Cat.where({
-        'id': req.params.cat_id
-    }).fetch({
-        require: true
-    });
+    const catId = req.params.cat_id;
+    const cat = await dataLayer.getCatByID(catId);
+
     await cat.destroy();
     res.redirect('/cats')
 })
