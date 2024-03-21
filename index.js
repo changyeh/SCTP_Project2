@@ -1,6 +1,7 @@
 const express = require("express");
 const hbs = require("hbs");
 const wax = require("wax-on");
+const cors = require("cors");
 require("dotenv").config();
 
 // create an instance of express app
@@ -22,6 +23,9 @@ app.use(
         extended: false
     })
 );
+
+// enable cors
+app.use(cors());
 
 const landingRoutes = require('./routes/landing');
 const catRoutes = require('./routes/cats');
