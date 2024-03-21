@@ -8,6 +8,10 @@ const getCatByID = async (catId) => {
     });
 }
 
+const getAllCats = async () => {
+    return await Cat.fetchAll();
+}
+
 module.exports = {
-    getCatByID
+    getCatByID, getAllCats
 }

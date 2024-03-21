@@ -24,11 +24,15 @@ app.use(
 );
 
 const landingRoutes = require('./routes/landing');
-const catRoutes = require('./routes/cats')
+const catRoutes = require('./routes/cats');
+const api = {
+    cats: require('./routes/api/cats')
+}
 
 async function main() {
     app.use('/', landingRoutes);
     app.use('/cats', catRoutes);
+    app.use('/api/cats', express.json(), api.cats);
 }
 
 main();
